@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jp.co.sample.domain.Employee;
-import jp.co.sample.form.UpdateEmployeeForm;
+import jp.co.sample.form.UpdateEmployeeFrom;
 import jp.co.sample.service.EmployeeService;
 
 @Controller
@@ -20,8 +20,8 @@ public class EmployeeController {
 	private EmployeeService employeeService;
 
 	@ModelAttribute
-	private UpdateEmployeeForm setUpdateEmployeeForm() {
-		return new UpdateEmployeeForm();
+	private UpdateEmployeeFrom setUpdateEmployeeForm() {
+		return new UpdateEmployeeFrom();
 	}
 
 	/**
@@ -57,4 +57,20 @@ public class EmployeeController {
 
 		return "employee/detail";
 	}
+
+	@RequestMapping("/update")
+	public String update(UpdateEmployeeFrom form) {
+		Employee employee = new Employee();
+
+		// 主キー検索で更新する従業員情報を代入
+		employee = employeeService.showDetail(Integer.valueOf(form.getId()));
+
+		// 更新
+		employee.setDependentsCount(Integer.valueOf(form.getDependentsCount()));
+
+		employeeService.update(employee);
+
+		return "redirect:/employee/showList";
+	}
+
 }
