@@ -72,7 +72,7 @@ public class EmployeeRepository {
 				+ " FROM employees WHERE id = :id;";
 
 		// :id にデータを格納
-		SqlParameterSource param = new MapSqlParameterSource().addValue(":id", id);
+		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
 
 		// 実行
 		Employee employee = template.queryForObject(loadSql, param, EMPLOYEE_ROW_MAPPER);
